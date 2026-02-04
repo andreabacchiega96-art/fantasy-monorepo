@@ -73,7 +73,7 @@ export function recomputeParticipants(auctionId){
   const elig = db.prepare("SELECT user_id FROM auction_participants WHERE auction_id=? AND status='participating'").all(auctionId).map(r=>r.user_id);
   let currentTop = null;
   if(elig.length){
-    currentTop = db.prepare(`SELECT user_id,amount,created_at FROM bids WHERE auction_id=? AND user_id IN (${elig.map(()=>'?').join(',')}) ORDER BY amount DESC, id ASC LIMIT 1`).get(auctionId, *elig);
+    currentTop = db.prepare(`SELECT user_id,amount,created_at FROM bids WHERE auction_id=? AND user_id IN (${elig.map(()=>'?').join(',')}) ORDER BY amount DESC, id ASC LIMIT 1`).get(auctionId, ...elig);
   }
   db.prepare('UPDATE auctions SET winning_bid=?, winner_user_id=? WHERE id=?').run(currentTop?currentTop.amount:null, currentTop?currentTop.user_id:null, auctionId);
 }
