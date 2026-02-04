@@ -98,7 +98,7 @@ export function placeBid(auctionId, userId, amount){
 export function createAuction({player_name, role, base_bid, created_by}){
   // uniqueness for open
   const dup = db.prepare("SELECT 1 FROM auctions WHERE status='open' AND player_name=?").get(player_name);
-  if(dup) throw new Error('Esiste già un'asta aperta per questo giocatore');
+  if(dup) throw new Error("Esiste già un'asta aperta per questo giocatore");
   ensureRoleCapacityForNewAuction(role);
   const info = db.prepare('INSERT INTO auctions(player_name,role,base_bid,created_by) VALUES (?,?,?,?)').run(player_name, role, base_bid, created_by);
   const id = info.lastInsertRowid;
