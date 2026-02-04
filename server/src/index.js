@@ -9,6 +9,7 @@ import auctionsRouter from './routes/auctions.js';
 import rostersRouter from './routes/rosters.js';
 import adminRouter from './routes/admin.js';
 import hereRouter from './routes/herewego.js';
+import bootstrapRose from 'bootstrapRose';
 
 dotenv.config();
 const app = express();
