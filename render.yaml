@@ -1,0 +1,24 @@
+services:
+  - type: web
+    name: fantasy-backend
+    env: node
+    rootDir: server
+    buildCommand: "npm install"
+    startCommand: "npm run start"
+
+    # Environment variables
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: JWT_SECRET
+        sync: false     # la imposterai dalla dashboard Render
+      - key: DB_FILE
+        value: data.sqlite
+
+    # Persistent SQLite storage
+    disk:
+      name: sqlite-disk
+      mountPath: /opt/render/project/src
+
+    # Health check
+    healthCheckPath: /api/health
