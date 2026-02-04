@@ -15,6 +15,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 initDb();
+bootstrapRose(); // <-- importa le rose da server/data/import_rose.j
 
 app.get('/api/health', (req,res)=>{
   res.json({ ok:true, phase: getPhase() });
