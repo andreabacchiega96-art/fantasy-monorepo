@@ -56,7 +56,7 @@ router.post('/', authRequired, (req,res)=>{
    try{
      assertPhase('aste');
      const me = db.prepare('SELECT is_active, is_admin FROM users WHERE id=?').get(req.user.id);
-     if(!me  || !me.is_active){
+     if(!me  || me.is_admin || !me.is_active){
        return res.status(403).json({ error: 'Utente non abilitato ad aprire aste' });
      }
      const { player_name, role, base_bid } = req.body;
