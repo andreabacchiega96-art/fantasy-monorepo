@@ -1,4 +1,4 @@
-
+         
 import express from 'express';
 import { authRequired, adminOnly } from './auth.js';
 import { getPhase, setPhase } from '../phaseManager.js';
@@ -46,22 +46,5 @@ router.post("/reset-rosters", authRequired, adminOnly, (req, res) => {
     res.status(400).json({ error: e.message });
   }
   });
-
-router.post('/maintenance/fix-admin', (req, res) => {
-  try {
-    db.prepare(`
-      INSERT OR IGNORE INTO users(username, password_hash, is_admin, is_active, budget)
-      VALUES ('admin', 'admin123', 1, 0, 100)
-    `).run();
-
-    db.prepare(`
-      UPDATE users SET is_admin = 1, is_active = 0 WHERE username = 'admin'
-    `).run();
-
-    return res.json({ ok: true, message: "Admin tecnico ripristinato" });
-  } catch (e) {
-    return res.status(500).json({ error: e.message });
-  }
-});
 
 export default router;
