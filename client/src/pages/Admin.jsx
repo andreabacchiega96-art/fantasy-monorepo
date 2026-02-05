@@ -12,7 +12,7 @@ export default function Admin(){
   useEffect(()=>{ load(); },[]);
   async function call(path){ const r = await api(path,'POST'); if(r.error) alert(r.error); else load(); }
   async function cancel(id){ if(!confirm('Annullare asta?')) return; const r=await api(`/admin/auctions/${id}/cancel`,'POST'); if(r.error) alert(r.error); else load(); }
-  return <div>
+  return <div> {
     <h2>Admin</h2>
     <div>Fase corrente: <b>{phase}</b></div>
     <div style={{display:'flex', gap:8, margin:'8px 0'}}>
