@@ -18,12 +18,13 @@ router.get('/mine', authRequired, (req,res)=>{
   res.json(rows);
 });
 
-router.get("/all", authRequired, (req, res)=>{
+router.get('/all', authRequired, (req,res)=>{
   const users = db.prepare(`
-    SELECT id, username, budget 
-    FROM users 
-    WHERE username <> 'admin'
-    ORDER BY username
+    SELECT u.id, u.username, u.budget
+    FROM users u
+    WHERE u.username <> 'admin'
+      AND EXISTS (SELECT 1 FROM rosters r WHERE r.user_id = u.id)
+    ORDER BY u.username
   `).all();
 
   const out = users.map(u => {
@@ -35,7 +36,6 @@ router.get("/all", authRequired, (req, res)=>{
     `).all(u.id);
     return { team: u.username, credits: u.budget, players };
   });
-
   res.json(out);
 });
 
