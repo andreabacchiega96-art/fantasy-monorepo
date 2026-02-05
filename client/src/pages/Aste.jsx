@@ -113,7 +113,7 @@ export default function Aste(){
 
       <div style={{height:12}}/>
 
-      {rows.map(a => <AuctionCard key={a.id} a={a} refresh={loadAuctions}/>)}
+      {rows.map(a => <AuctionCard key={a.id} a={a} me={me} refresh={loadAuctions}/>)}
     </div>
   );
 }
