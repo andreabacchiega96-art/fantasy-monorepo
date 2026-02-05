@@ -21,6 +21,7 @@ export default function Admin(){
       <button onClick={()=>call('/admin/phase/open-aste')}>Apri Aste</button>
       <button onClick={()=>call('/admin/phase/close-aste')}>Chiudi Aste</button>
     </div>
+    <button className="btn btn-danger" onClick={resetRosters}>Reset ROSE (dal JSON></button>
     <h3>Aste aperte</h3>
     <ul>
       {auctions.filter(a=>a.status==='open').map(a=> (
