@@ -41,14 +41,19 @@ export function ensureRoleCapacityForNewAuction(role){
 }
 
 export function ensureAllParticipants(auctionId){
-  const users = db.prepare('SELECT id FROM users').all();
-  for(const u of users){
-    const ex = db.prepare('SELECT 1 FROM auction_participants WHERE auction_id=? AND user_id=?').get(auctionId, u.id);
-    if(!ex){
-      db.prepare('INSERT INTO auction_participants(auction_id,user_id,status) VALUES (?,?,?)').run(auctionId, u.id, 'participating');
-    }
-  }
-}
+-  const users = db.prepare('SELECT id FROM users').all();
++  const users = db.prepare(`
++    SELECT id FROM users
++    WHERE is_active = 1 AND is_admin = 0
++  `).all();
+   for(const u of users){
+     const exists = db.prepare('SELECT 1 FROM auction_participants WHERE auction_id = ? AND user_id = ?').get(auctionId, u.id);
+     if(!exists){
+       db.prepare('INSERT INTO auction_participants(auction_id,user_id,status) VALUES (?,?,?)')
+         .run(auctionId, u.id, 'participating');
+     }
+   }
+ }
 
 export function recomputeParticipants(auctionId){
   const a = db.prepare('SELECT * FROM auctions WHERE id=?').get(auctionId);
