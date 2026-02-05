@@ -103,13 +103,14 @@ export default function Aste({me}){
       justifyContent: "space-between",
       alignItems: "center"
     }}
-    ></div>
+  >
     <h3 style={{ margin: 0 }}>Budget squadre</h3>
     <span style={{ 
       fontSize: 22, 
       transform: showBudgets ? "rotate(90deg)" : "rotate(0deg)",
       transition: "0.2s ease"
     }}>
+      ▶
     </span>
   </div>
 
