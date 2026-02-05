@@ -8,7 +8,6 @@ export default function Aste(){
   const [form, setForm] = useState({ player_name:'', role:'', base_bid:1 });
   const [busy, setBusy] = useState(false);
   const [showOnlyOpen, setShowOnlyOpen] = useState(true);
-
   const [budgets, setBudgets] = useState([]);
 
   async function loadAuctions(){
@@ -32,7 +31,7 @@ export default function Aste(){
     }, 3000);
 
     return ()=>clearInterval(t);
-  }, [showOnlyOpen]); 
+  }, [showOnlyOpen]);  // ricarica quando cambi filtro
 
   async function create(e){
     e.preventDefault();
@@ -49,9 +48,10 @@ export default function Aste(){
         await loadAuctions();
         await loadBudgets();
       }
-    }catch(err){
+
+    } catch(err){
       alert('Errore di rete: impossibile aprire l’asta');
-    }finally{
+    } finally {
       setBusy(false);
     }
   }
@@ -86,10 +86,11 @@ export default function Aste(){
           {busy ? 'Apertura…' : 'Apri asta'}
         </button>
 
-        <button className="btn"
-           type="button"
-           onClick={()=> setShowOnlyOpen(!showOnlyOpen)}>
-           {showOnlyOpen ? "Mostra anche chiuse" : "Mostra solo aperte"}
+        <button 
+          type="button"
+          className="btn"
+          onClick={()=> setShowOnlyOpen(!showOnlyOpen)}>
+          {showOnlyOpen ? "Mostra anche chiuse" : "Mostra solo aperte"}
         </button>
       </form>
 
@@ -97,7 +98,7 @@ export default function Aste(){
         <h3>Budget squadre</h3>
         <table className="table">
           <thead>
-            <tr><th>Squadra</th><th style={{width:80}}>Crediti</th></tr>
+            <tr><th>Squadra</th><th>Crediti</th></tr>
           </thead>
           <tbody>
             {budgets.map(b=>(
