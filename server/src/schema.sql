@@ -75,3 +75,21 @@ CREATE TABLE IF NOT EXISTS notifications (
   payload TEXT,
   created_at TEXT DEFAULT CURRENT_TIMESTAMP
 );
+
+ALTER TABLE users ADD COLUMN is_active INTEGER NOT NULL DEFAULT 1;
+
+UPDATE users
+SET is_active = 0
+WHERE username LIKE 'utente%';
+
+UPDATE users
+SET is_active = 0
+WHERE username = 'admin';
+
+UPDATE users
+SET is_admin = 1
+WHERE username = 'LIRILI L''AL-HILAL';
+
+UPDATE users
+SET is_active = 0, is_admin = 0
+WHERE username = 'admin';
