@@ -94,22 +94,44 @@ export default function Aste({me}){
         </button>
       </form>
 
-      <div className="card" style={{marginTop:12}}>
-        <h3>Budget squadre</h3>
-        <table className="table">
-          <thead>
-            <tr><th>Squadra</th><th>Crediti</th></tr>
-          </thead>
-          <tbody>
-            {budgets.map(b=>(
-              <tr key={b.username}>
-                <td>{b.username}</td>
-                <td>{b.budget}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+<div className="card" style={{ marginTop: 12 }}>
+  <div 
+    onClick={() => setShowBudgets(!showBudgets)} 
+    style={{
+      cursor: "pointer",
+      display: "flex",
+      justifyContent: "space-between",
+      alignItems: "center"
+    }}
+  >
+    <h3 style={{ margin: 0 }}>Budget squadre</h3>
+    <span style={{ 
+      fontSize: 22, 
+      transform: showBudgets ? "rotate(90deg)" : "rotate(0deg)",
+      transition: "0.2s ease"
+    }}>
+      ▶
+    </span>
+  </div>
+
+  {showBudgets && (
+    <div style={{ marginTop: 12 }}>
+      <table className="table">
+        <thead>
+          <tr><th>Squadra</th><th style={{ width: 80 }}>Crediti</th></tr>
+        </thead>
+        <tbody>
+          {budgets.map(b => (
+            <tr key={b.username}>
+              <td>{b.username}</td>
+              <td>{b.budget}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  )}
+</div>
 
       <div style={{height:12}}/>
 
