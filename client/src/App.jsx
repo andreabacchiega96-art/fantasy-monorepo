@@ -31,21 +31,27 @@ export default function App(){
     </div>
   }
 
-  return <div style={{fontFamily:'system-ui', padding:16}}>
-    <nav style={{display:'flex', gap:8}}>
-      <button onClick={()=>setPage('aste')}>Aste</button>
-      <button onClick={()=>setPage('rose')}>Rose</button>
-      <button onClick={()=>setPage('personale')}>Personale</button>
-      <button onClick={()=>setPage('here')}>Here We Go</button>
-      {me?.is_admin && <button onClick={()=>setPage('admin')}>Admin</button>}
-      <span style={{marginLeft:'auto'}}>Ciao {me?.username}</span>
-      <button onClick={()=>{localStorage.removeItem('token'); setToken(null);}}>Logout</button>
-    </nav>
-    <hr/>
-    {page==='aste' && <Aste me={me}/>} 
-    {page==='rose' && <Rose me={me}/>} 
-    {page==='personale' && <Personale me={me}/>} 
-    {page==='here' && <HereWeGo/>}
-    {page==='admin' && me?.is_admin && <Admin/>}
+  return (
+  <div className="container">
+    <div className="navbar">
+      <button className="btn" onClick={()=>setPage('aste')}>Aste</button>
+      <button className="btn" onClick={()=>setPage('rose')}>Rose (mie)</button>
+      <button className="btn" onClick={()=>setPage('rose_tutte')}>Rose (tutte)</button>
+      <button className="btn" onClick={()=>setPage('personale')}>Personale</button>
+      <button className="btn" onClick={()=>setPage('here')}>Here We Go</button>
+      {me?.is_admin && <button className="btn" onClick={()=>setPage('admin')}>Admin</button>}
+      <div style={{marginLeft:'auto'}}>Ciao {me?.username}</div>
+      <button className="btn" onClick={()=>{localStorage.removeItem('token');setToken(null);}}>Logout</button>
+    </div>
+
+    <div style={{marginTop:16}}>
+      {page==='aste' && <Aste me={me}/>}
+      {page==='rose' && <Rose me={me}/>}
+      {page==='rose_tutte' && me?.is_admin && <RoseTutte/>}
+      {page==='personale' && <Personale me={me}/>}
+      {page==='here' && <HereWeGo/>}
+      {page==='admin' && me?.is_admin && <Admin/>}
+    </div>
   </div>
-}
+)
+
