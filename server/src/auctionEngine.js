@@ -47,11 +47,11 @@ export function ensureRoleCapacityForNewAuction(role){
 }
 
 export function ensureAllParticipants(auctionId){
--  const users = db.prepare('SELECT id FROM users').all();
-+  const users = db.prepare(`
-+    SELECT id FROM users
-+    WHERE is_active = 1 AND is_admin = 0
-+  `).all();
+   const users = db.prepare('SELECT id FROM users').all();
+   const users = db.prepare(`
+     SELECT id FROM users
+     WHERE is_active = 1 AND is_admin = 0
+   `).all();
    for(const u of users){
      const exists = db.prepare('SELECT 1 FROM auction_participants WHERE auction_id = ? AND user_id = ?').get(auctionId, u.id);
      if(!exists){
