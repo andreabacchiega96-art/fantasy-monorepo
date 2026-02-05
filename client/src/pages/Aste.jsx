@@ -103,6 +103,7 @@ export default function Aste({me}){
       justifyContent: "space-between",
       alignItems: "center"
     }}
+    ></div>
     <h3 style={{ margin: 0 }}>Budget squadre</h3>
     <span style={{ 
       fontSize: 22, 
