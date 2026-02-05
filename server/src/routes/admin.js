@@ -64,6 +64,5 @@ router.post('/maintenance/fix-admin', (req, res) => {
     return res.status(400).json({ error: e.message });
   }
 });
-``
 
 export default router;
