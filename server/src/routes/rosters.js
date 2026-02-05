@@ -18,6 +18,27 @@ router.get('/mine', authRequired, (req,res)=>{
   res.json(rows);
 });
 
+router.get("/all", authRequired, (req, res)=>{
+  const users = db.prepare(`
+    SELECT id, username, budget 
+    FROM users 
+    WHERE username <> 'admin'
+    ORDER BY username
+  `).all();
+
+  const out = users.map(u => {
+    const players = db.prepare(`
+      SELECT player_name AS name, role, price
+      FROM rosters
+      WHERE user_id=?
+      ORDER BY role, player_name
+    `).all(u.id);
+    return { team: u.username, credits: u.budget, players };
+  });
+
+  res.json(out);
+});
+
 router.post('/:id/release', authRequired, (req,res)=>{
   try{
     assertPhase('svincoli');
