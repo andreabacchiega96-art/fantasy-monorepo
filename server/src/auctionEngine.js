@@ -28,7 +28,6 @@ export function countOpenAuctionsByRole(role){
 }
 
 export function totalRemainingSlotsForRole(role){
-   const r = db.prepare('SELECT SUM(slots_total - slots_used) c FROM user_role_slots WHERE role=?').get(role);
    const r = db.prepare(`
      SELECT SUM(s.slots_total - s.slots_used) AS c
      FROM user_role_slots s
@@ -47,7 +46,6 @@ export function ensureRoleCapacityForNewAuction(role){
 }
 
 export function ensureAllParticipants(auctionId){
-   const users = db.prepare('SELECT id FROM users').all();
    const users = db.prepare(`
      SELECT id FROM users
      WHERE is_active = 1 AND is_admin = 0
