@@ -8,7 +8,7 @@ export default function Aste({me}){
   const [form, setForm] = useState({ player_name:'', role:'', base_bid:1 });
   const [busy, setBusy] = useState(false);
   const [showOnlyOpen, setShowOnlyOpen] = useState(true);
-  const [budgets, setBudgets] = useState([]);
+  const [budgets, setBudgets] = useState(false);
 
   async function loadAuctions(){
     const query = showOnlyOpen ? "?open=1" : "";
