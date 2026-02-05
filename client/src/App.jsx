@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { api } from './services/api.js';
 import Aste from './pages/Aste.jsx';
+import Squadra from './pages/Squadra.jsx';
 import Rose from './pages/Rose.jsx';
 import Admin from './pages/Admin.jsx';
 import Personale from './pages/Personale.jsx';
