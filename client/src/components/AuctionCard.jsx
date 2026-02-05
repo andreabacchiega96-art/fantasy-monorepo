@@ -5,6 +5,7 @@ import { api } from '../services/api.js';
 export default function AuctionCard({ a, refresh }){
   const [amount, setAmount] = useState('');
   const top = a.current_top || { amount:a.base_bid, username:null };
+  const amITop = top && top.user_id === me.id
   async function bid(){
     const r = await api(`/auctions/${a.id}/bid`, 'POST', { amount: Number(amount) });
     if(r.error) alert(r.error); else refresh();
