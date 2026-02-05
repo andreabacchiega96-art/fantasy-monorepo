@@ -218,7 +218,7 @@
         {
           "name": "ADAMS",
           "price": 10,
-          "role": "C"
+          "role": "A"
         },
         {
           "name": "DALLINGA",
@@ -395,7 +395,7 @@
         {
           "name": "ALBIOL",
           "price": 1,
-          "role": "P"
+          "role": "D"
         },
         {
           "name": "BIANCHETTI",
@@ -470,12 +470,12 @@
         {
           "name": "BELOTTI",
           "price": 29,
-          "role": "C"
+          "role": "A"
         },
         {
           "name": "DAVIS",
           "price": 16,
-          "role": "C"
+          "role": "A"
         },
         {
           "name": "DIAO",
@@ -773,7 +773,7 @@
         {
           "name": "AKANJI",
           "price": 19,
-          "role": "P"
+          "role": "D"
         },
         {
           "name": "BELLANOVA",
@@ -808,12 +808,12 @@
         {
           "name": "BERNARDESCHI",
           "price": 9,
-          "role": "D"
+          "role": "C"
         },
         {
           "name": "EDERSON",
           "price": 17,
-          "role": "D"
+          "role": "C"
         },
         {
           "name": "FAGIOLI",
@@ -848,12 +848,12 @@
         {
           "name": "BANDA",
           "price": 1,
-          "role": "C"
+          "role": "A"
         },
         {
           "name": "LAUTARO",
           "price": 175,
-          "role": "C"
+          "role": "A"
         },
         {
           "name": "SIMEONE",
@@ -1005,7 +1005,7 @@
         {
           "name": "BIRAGHI",
           "price": 6,
-          "role": "P"
+          "role": "D"
         },
         {
           "name": "HERMOSO",
@@ -1045,7 +1045,7 @@
         {
           "name": "ADOPO",
           "price": 2,
-          "role": "D"
+          "role": "C"
         },
         {
           "name": "AKPA AKPRO",
@@ -1085,7 +1085,7 @@
         {
           "name": "COLOMBO",
           "price": 13,
-          "role": "C"
+          "role": "A"
         },
         {
           "name": "GIMENEZ",
@@ -1201,12 +1201,12 @@
         {
           "name": "CASTRO",
           "price": 53,
-          "role": "C"
+          "role": "A"
         },
         {
           "name": "DOMINGUEZ",
           "price": 1,
-          "role": "C"
+          "role": "A"
         },
         {
           "name": "KRSTOVIC",
@@ -1282,7 +1282,7 @@
         {
           "name": "BELAHYANE",
           "price": 3,
-          "role": "D"
+          "role": "C"
         },
         {
           "name": "DE ROON",
@@ -1312,17 +1312,17 @@
         {
           "name": "CAMBIAGHI",
           "price": 1,
-          "role": "C"
+          "role": "A"
         },
         {
           "name": "CANCELLIERI",
           "price": 1,
-          "role": "C"
+          "role": "A"
         },
         {
           "name": "NZOLA",
           "price": 4,
-          "role": "C"
+          "role": "A"
         },
         {
           "name": "ORBAN",
@@ -1428,12 +1428,12 @@
         {
           "name": "DOVBYK",
           "price": 1,
-          "role": "C"
+          "role": "A"
         },
         {
           "name": "FERGUSON",
           "price": 118,
-          "role": "C"
+          "role": "A"
         },
         {
           "name": "MORATA",
