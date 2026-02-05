@@ -19,7 +19,23 @@ export default function Aste(){
     const t = setInterval(load, 3000);
     return ()=>clearInterval(t);
   },[]);
+  
+const [budgets, setBudgets] = useState([]);
 
+async function loadBudgets(){
+  const r = await api('/rosters/budgets');
+  setBudgets(Array.isArray(r) ? r : []);
+}
+
+useEffect(()=>{
+  load();
+  loadBudgets();
+  const t = setInterval(()=>{
+    load();
+    loadBudgets();
+  }, 3000);
+  return ()=>clearInterval(t);
+},[]);
   async function create(e){
     e.preventDefault();
     if(busy) return;
