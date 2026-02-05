@@ -27,4 +27,17 @@ export default function AuctionCard({ a, refresh }){
       <button onClick={leave}>Lascia</button>
     </div>}
   </div>
+  {a.status === 'open' && !amITop && (
+  <>
+    <input className="input" placeholder="Rilancio"
+           value={amount} onChange={e=>setAmount(e.target.value)} />
+    <button className="btn btn-primary" onClick={bid}>Offri</button>
+  </>
+)}
+
+{amITop && (
+  <div style={{opacity:.6, marginTop:8}}>
+    Sei già il miglior offerente
+  </div>
+)}
 }
