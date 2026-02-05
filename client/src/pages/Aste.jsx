@@ -36,6 +36,24 @@ useEffect(()=>{
   }, 3000);
   return ()=>clearInterval(t);
 },[]);
+
+  <div className="card" style={{marginBottom:16}}>
+  <h3>Budget squadre</h3>
+  <table className="table">
+    <thead>
+      <tr><th>Squadra</th><th>Crediti</th></tr>
+    </thead>
+    <tbody>
+      {budgets.map(u=>(
+        <tr key={u.username}>
+          <td>{u.username}</td>
+          <td>{u.budget}</td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
+  
   async function create(e){
     e.preventDefault();
     if(busy) return;
