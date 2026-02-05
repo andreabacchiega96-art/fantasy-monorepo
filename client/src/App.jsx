@@ -36,8 +36,8 @@ export default function App(){
   <div className="container">
     <div className="navbar">
       <button className="btn" onClick={()=>setPage('aste')}>Aste</button>
-      <button className="btn" onClick={()=>setPage('rose')}>La mia squadra</button>
-      <button className="btn" onClick={()=>setPage('rose_tutte')}>Rose</button>
+      <button className="btn" onClick={()=>setPage('mia')}>La mia squadra</button>
+      <button className="btn" onClick={()=>setPage('rose')}>Rose</button>
       <button className="btn" onClick={()=>setPage('personale')}>Personale</button>
       <button className="btn" onClick={()=>setPage('here')}>Here We Go</button>
       {me?.is_admin && <button className="btn" onClick={()=>setPage('admin')}>Admin</button>}
@@ -47,8 +47,8 @@ export default function App(){
 
     <div style={{marginTop:16}}>
       {page==='aste' && <Aste me={me}/>}
-      {page==='squadra' && <Squadra me={me}/>}
-      {page==='rose' && me?.is_admin && <Rose/>}
+      {page==='mia' && <Rose me={me}/>}
+      {page==='rose' && <RoseTutte/>}
       {page==='personale' && <Personale me={me}/>}
       {page==='here' && <HereWeGo/>}
       {page==='admin' && me?.is_admin && <Admin/>}
