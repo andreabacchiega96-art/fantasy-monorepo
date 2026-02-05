@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { api } from '../services/api.js';
 import AuctionCard from '../components/AuctionCard.jsx';
 
-export default function Aste(){
+export default function Aste({me}){
 
   const [rows, setRows] = useState([]);
   const [form, setForm] = useState({ player_name:'', role:'', base_bid:1 });
