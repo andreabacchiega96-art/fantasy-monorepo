@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { api } from '../services/api.js';
 
-export default function Rose(){
+export default function Squadra(){
   const [mine, setMine] = useState([]);
   const [phase, setPhase] = useState('chiusa');
   async function load(){
@@ -18,7 +18,7 @@ export default function Rose(){
   const roles = ['P','D','C','A'];
   const grouped = Object.fromEntries(roles.map(r=> [r, mine.filter(x=>x.role===r)]));
   return <div>
-    <h2>Rose (mie)</h2>
+    <h2>Squadra (mie)</h2>
     {phase!=='svincoli' && <div style={{padding:8, background:'#ffe8d2', border:'1px solid #ffcc99', marginBottom:8}}>La fase svincoli è chiusa</div>}
     {roles.map(r=> (
       <div key={r} style={{marginBottom:12}}>
