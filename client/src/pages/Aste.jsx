@@ -6,9 +6,11 @@ export default function Aste(){
   const [rows, setRows] = useState([]);
   const [form, setForm] = useState({ player_name:'', role:'', base_bid:1 });
   const [busy, setBusy] = useState(false);
+  const [showOnlyOpen, setShowOnlyOpen] = useState(true);
 
   async function load(){
-    const r = await api('/auctions');
+    const query = showOnlyOpen ? "?open=1" : "";
+    const r = await api(`/auctions${query}`);
     setRows(Array.isArray(r) ? r : []);
   }
 
@@ -67,6 +69,12 @@ export default function Aste(){
         <button className={`btn btn-primary`} type="submit" disabled={busy}>
           {busy ? 'Apertura…' : 'Apri asta'}
         </button>
+        
+-        <button className="btn"
+           onClick={()=>{ setShowOnlyOpen(!showOnlyOpen); load(); }}>
+           {showOnlyOpen ? "Mostra anche chiuse" : "Mostra solo aperte"}
+         </button>
+
       </form>
 
       <div style={{height:12}}/>
