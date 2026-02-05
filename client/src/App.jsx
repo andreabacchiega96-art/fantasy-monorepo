@@ -36,7 +36,7 @@ export default function App(){
   <div className="container">
     <div className="navbar">
       <button className="btn" onClick={()=>setPage('aste')}>Aste</button>
-      <button className="btn" onClick={()=>setPage('rose')}>La mia lsquadra</button>
+      <button className="btn" onClick={()=>setPage('rose')}>La mia squadra</button>
       <button className="btn" onClick={()=>setPage('rose_tutte')}>Rose</button>
       <button className="btn" onClick={()=>setPage('personale')}>Personale</button>
       <button className="btn" onClick={()=>setPage('here')}>Here We Go</button>
