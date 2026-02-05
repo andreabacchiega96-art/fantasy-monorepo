@@ -98,6 +98,11 @@ export function placeBid(auctionId, userId, amount){
   const cur = db.prepare('SELECT amount FROM bids WHERE auction_id=? ORDER BY amount DESC, id ASC LIMIT 1').get(auctionId);
   const min = cur? cur.amount+1 : a.base_bid;
   if(amount < min) throw new Error('Offerta non sufficiente');
+  const top = getTopForAuction(auctionId);
+  if(top && top.user_id === userId){
+  throw new Error("Hai già l'offerta più alta");
+}
+
   const ts = nowISO();
   db.prepare('INSERT INTO bids(auction_id,user_id,amount,created_at) VALUES (?,?,?,?)').run(auctionId, userId, amount, ts);
   db.prepare('UPDATE auctions SET last_bid_timestamp=? WHERE id=?').run(ts, auctionId);
