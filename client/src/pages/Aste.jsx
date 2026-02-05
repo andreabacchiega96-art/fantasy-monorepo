@@ -22,7 +22,6 @@ export default function Aste(){
     setBudgets(Array.isArray(r) ? r : []);
   }
 
-  // 🔵 UNICO useEffect (pulito e chiaro)
   useEffect(()=>{
     loadAuctions();
     loadBudgets();
@@ -34,7 +33,6 @@ export default function Aste(){
 
     return ()=>clearInterval(t);
   }, [showOnlyOpen]); 
-  // 🔵 Se cambi filtro → ricarica
 
   async function create(e){
     e.preventDefault();
@@ -88,7 +86,6 @@ export default function Aste(){
           {busy ? 'Apertura…' : 'Apri asta'}
         </button>
 
-        {/* 🔵 FILTRO ASTE ATTIVE */}
         <button className="btn"
            type="button"
            onClick={()=> setShowOnlyOpen(!showOnlyOpen)}>
@@ -96,7 +93,6 @@ export default function Aste(){
         </button>
       </form>
 
-      {/* 🔵 RECAP BUDGET */}
       <div className="card" style={{marginTop:12}}>
         <h3>Budget squadre</h3>
         <table className="table">
