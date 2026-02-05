@@ -28,9 +28,15 @@ export function countOpenAuctionsByRole(role){
 }
 
 export function totalRemainingSlotsForRole(role){
-  const r = db.prepare('SELECT SUM(slots_total - slots_used) c FROM user_role_slots WHERE role=?').get(role);
-  return r.c || 0;
-}
+-  const r = db.prepare('SELECT SUM(slots_total - slots_used) c FROM user_role_slots WHERE role=?').get(role);
++  const r = db.prepare(`
++    SELECT SUM(s.slots_total - s.slots_used) AS c
++    FROM user_role_slots s
++    JOIN users u ON u.id = s.user_id
++    WHERE s.role = ? AND u.is_active = 1 AND u.is_admin = 0
++  `).get(role);
+   return r.c || 0;
+ }
 
 export function ensureRoleCapacityForNewAuction(role){
   const open = countOpenAuctionsByRole(role);
