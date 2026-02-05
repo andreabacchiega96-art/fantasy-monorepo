@@ -1,90 +1,90 @@
-
-import express from 'express';
-import { authRequired } from './auth.js';
-import { db } from '../db.js';
-import { getPhase, assertPhase } from '../phaseManager.js';
-import { createAuction, placeBid, leaveAuction, recomputeParticipants, finalizeAuction } from '../auctionEngine.js';
+import express from "express";
+import { authRequired } from "./auth.js";
+import { db } from "../db.js";
+import { assertPhase } from "../phaseManager.js";
+import { createAuction } from "../auctionEngine.js";
 
 const router = express.Router();
 
-const onlyOpen = req.query.open === '1';
+router.get("/", authRequired, (req, res) => {
+  const onlyOpen = req.query.open === "1";
 
-const rows = onlyOpen
-  ? db.prepare(`
-      SELECT * FROM auctions
-      WHERE status = 'open'
-      ORDER BY id DESC
-    `).all()
-  : db.prepare(`
-      SELECT * FROM auctions
-      WHERE status <> 'cancelled'
-      ORDER BY 
-        CASE status 
-          WHEN 'open' THEN 0
-          WHEN 'closed' THEN 1
-        END,
-        id DESC
-    `).all();
+  const rows = db
+    .prepare(
+      onlyOpen
+        ? `
+          SELECT a.*,
+            (SELECT COUNT(*) 
+               FROM auction_participants ap 
+              WHERE ap.auction_id=a.id 
+                AND ap.status='participating') AS participating_count,
+            (SELECT json_object('amount', b.amount, 'username', u.username, 'user_id', u.id)
+               FROM bids b 
+               JOIN users u ON u.id=b.user_id
+              WHERE b.auction_id=a.id
+              ORDER BY b.amount DESC, b.id ASC
+              LIMIT 1) AS current_top
+          FROM auctions a
+          WHERE a.status='open'
+          ORDER BY a.id DESC
+        `
+        : `
+          SELECT a.*,
+            (SELECT COUNT(*) 
+               FROM auction_participants ap 
+              WHERE ap.auction_id=a.id 
+                AND ap.status='participating') AS participating_count,
+            (SELECT json_object('amount', b.amount, 'username', u.username, 'user_id', u.id)
+               FROM bids b 
+               JOIN users u ON u.id=b.user_id
+              WHERE b.auction_id=a.id
+              ORDER BY b.amount DESC, b.id ASC
+              LIMIT 1) AS current_top
+          FROM auctions a
+          WHERE a.status <> 'cancelled'
+          ORDER BY 
+            CASE a.status 
+              WHEN 'open' THEN 0
+              WHEN 'closed' THEN 1
+            END,
+            a.id DESC
+        `
+    )
+    .all();
 
-router.get('/', authRequired, (req,res)=>{
-  const rows = db.prepare(`
-    SELECT a.*, 
-           (SELECT COUNT(*) FROM auction_participants ap WHERE ap.auction_id=a.id AND ap.status='participating') AS participating_count,
-           (SELECT json_object('amount',b.amount,'username',u.username)
-              FROM bids b JOIN users u ON u.id=b.user_id 
-             WHERE b.auction_id=a.id ORDER BY b.amount DESC, b.id ASC LIMIT 1) AS current_top
-    FROM auctions a
-    WHERE a.status IN ('','closed','void','cancelled')
-    ORDER BY a.status='open' DESC, COALESCE(a.last_bid_timestamp,a.created_at) DESC
-  `).all();
-  res.json(rows.map(r=> ({...r, current_top: r.current_top? JSON.parse(r.current_top): null })));
+  const formatted = rows.map((r) => ({
+    ...r,
+    current_top: r.current_top ? JSON.parse(r.current_top) : null,
+  }));
+
+  res.json(formatted);
 });
 
-router.post('/', authRequired, (req,res)=>{
-  try{
-    assertPhase('aste');
+
+// ------------------------
+// CREA ASTA
+// ------------------------
+router.post("/", authRequired, (req, res) => {
+  try {
+    assertPhase("aste");
+
     const { player_name, role, base_bid } = req.body;
-    const id = createAuction({ player_name, role, base_bid: Math.max(1, Number(base_bid||1)), created_by: req.user.id });
-    const a = db.prepare('SELECT * FROM auctions WHERE id=?').get(id);
-    res.status(201).json(a);
-  }catch(e){ res.status(400).json({ error: e.message }); }
-});
 
-router.post('/:id/bid', authRequired, (req,res)=>{
-  try{
-    assertPhase('aste');
-    placeBid(Number(req.params.id), req.user.id, Number(req.body.amount));
-    res.json({ ok:true });
-  }catch(e){ res.status(400).json({ error: e.message }); }
-});
+    // Slot check: (il tuo codice qui…)
 
-router.post('/:id/leave', authRequired, (req,res)=>{
-  try{
-    assertPhase('aste');
-    leaveAuction(Number(req.params.id), req.user.id);
-    res.json({ ok:true });
-  }catch(e){ res.status(400).json({ error: e.message }); }
-});
+    const id = createAuction({
+      player_name,
+      role,
+      base_bid: Math.max(1, Number(base_bid || 1)),
+      created_by: req.user.id,
+    });
 
-router.post('/:id/finalize', authRequired, (req,res)=>{
-  try{ finalizeAuction(Number(req.params.id)); res.json({ ok:true }); }
-  catch(e){ res.status(400).json({ error:e.message }); }
-});
+    const auction = db.prepare("SELECT * FROM auctions WHERE id=?").get(id);
 
-router.post('/', authRequired, (req,res)=>{
-   try{
-     assertPhase('aste');
-     const me = db.prepare('SELECT is_active, is_admin FROM users WHERE id=?').get(req.user.id);
-     if(!me  || me.is_admin || !me.is_active){
-       return res.status(403).json({ error: 'Utente non abilitato ad aprire aste' });
-     }
-     const { player_name, role, base_bid } = req.body;
-     const id = createAuction({ player_name, role, base_bid: Math.max(1, Number(base_bid||1)), created_by: req.user.id });
-     const a = db.prepare('SELECT * FROM auctions WHERE id = ?').get(id);
-     res.status(201).json(a);
-   }catch(e){
-     res.status(400).json({ error: e.message });
-   }
- });
+    res.status(201).json({ ok: true, auction });
+  } catch (e) {
+    res.status(400).json({ ok: false, error: e.message });
+  }
+});
 
 export default router;
