@@ -53,5 +53,5 @@ export default function App(){
       {page==='admin' && me?.is_admin && <Admin/>}
     </div>
   </div>
-)
+)}
 
