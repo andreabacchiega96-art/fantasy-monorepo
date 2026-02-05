@@ -109,7 +109,9 @@ export function createAuction({player_name, role, base_bid, created_by}){
   const dup = db.prepare("SELECT 1 FROM auctions WHERE status='open' AND player_name=?").get(player_name);
   if(dup) throw new Error("Esiste già un'asta aperta per questo giocatore");
   ensureRoleCapacityForNewAuction(role);
-  const info = db.prepare('INSERT INTO auctions(player_name,role,base_bid,created_by) VALUES (?,?,?,?)').run(player_name, role, base_bid, created_by);
+  const info = db.prepare('INSERT INTO auctions(player_name,role,base_bid,created_by) VALUES (?,?,?,?)').run(player_name, role, base_bid, created_by);  
+  const boh = db.prepare( 'INSERT INTO bids(auction_id, user_id, amount) VALUES (?, ?, ?)').run(auctionId, created_by, base_bid);
+
   const id = info.lastInsertRowid;
   ensureAllParticipants(id);
   recomputeParticipants(id);
