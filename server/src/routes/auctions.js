@@ -52,4 +52,20 @@ router.post('/:id/finalize', authRequired, (req,res)=>{
   catch(e){ res.status(400).json({ error:e.message }); }
 });
 
+router.post('/', authRequired, (req,res)=>{
+   try{
+     assertPhase('aste');
+     const me = db.prepare('SELECT is_active, is_admin FROM users WHERE id=?').get(req.user.id);
+     if(!me  || !me.is_active){
+       return res.status(403).json({ error: 'Utente non abilitato ad aprire aste' });
+     }
+     const { player_name, role, base_bid } = req.body;
+     const id = createAuction({ player_name, role, base_bid: Math.max(1, Number(base_bid||1)), created_by: req.user.id });
+     const a = db.prepare('SELECT * FROM auctions WHERE id = ?').get(id);
+     res.status(201).json(a);
+   }catch(e){
+     res.status(400).json({ error: e.message });
+   }
+ });
+
 export default router;
