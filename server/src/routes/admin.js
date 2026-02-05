@@ -5,6 +5,7 @@ import { getPhase, setPhase } from '../phaseManager.js';
 import { cancelAuctionByAdmin } from '../auctionEngine.js';
 import { db } from '../db.js';
 import { logEvent } from '../hereWeGo.js';
+import { bootstrapRose } from "../bootstrapRose.js";
 
 const router = express.Router();
 
@@ -35,5 +36,15 @@ router.post('/auctions/:id/cancel', authRequired, adminOnly, (req,res)=>{
   try{ cancelAuctionByAdmin(Number(req.params.id)); res.json({ ok:true }); }
   catch(e){ res.status(400).json({ error:e.message }); }
 });
+
+router.post("/reset-rosters", authRequired, adminOnly, (req, res) => {
+  try {
+    bootstrapRose("always");
+    logEvent("reset_rosters", "Admin ha resettato le ROSE allo stato del JSON canonico.");
+    res.json({ ok: true });
+  } catch (e) {
+    res.status(400).json({ error: e.message });
+  }
+  });
 
 export default router;
