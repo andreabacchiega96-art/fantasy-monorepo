@@ -89,4 +89,15 @@ router.post('/import', authRequired, (req,res)=>{
   }catch(e){ res.status(400).json({ error:e.message }); }
 });
 
+router.get("/budgets", authRequired, (req,res)=>{
+  const teams = db.prepare(`
+    SELECT username, budget 
+    FROM users
+    WHERE username <> 'admin' AND is_active = 1
+    ORDER BY username
+  `).all();
+
+  res.json(teams);
+});
+
 export default router;
