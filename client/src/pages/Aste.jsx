@@ -110,7 +110,6 @@ export default function Aste({me}){
       transform: showBudgets ? "rotate(90deg)" : "rotate(0deg)",
       transition: "0.2s ease"
     }}>
-      ▶
     </span>
   </div>
 
