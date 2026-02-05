@@ -7,6 +7,25 @@ import { createAuction, placeBid, leaveAuction, recomputeParticipants, finalizeA
 
 const router = express.Router();
 
+const onlyOpen = req.query.open === '1';
+
+const rows = onlyOpen
+  ? db.prepare(`
+      SELECT * FROM auctions
+      WHERE status = 'open'
+      ORDER BY id DESC
+    `).all()
+  : db.prepare(`
+      SELECT * FROM auctions
+      WHERE status <> 'cancelled'
+      ORDER BY 
+        CASE status 
+          WHEN 'open' THEN 0
+          WHEN 'closed' THEN 1
+        END,
+        id DESC
+    `).all();
+
 router.get('/', authRequired, (req,res)=>{
   const rows = db.prepare(`
     SELECT a.*, 
@@ -15,7 +34,7 @@ router.get('/', authRequired, (req,res)=>{
               FROM bids b JOIN users u ON u.id=b.user_id 
              WHERE b.auction_id=a.id ORDER BY b.amount DESC, b.id ASC LIMIT 1) AS current_top
     FROM auctions a
-    WHERE a.status IN ('open','closed','void','cancelled')
+    WHERE a.status IN ('','closed','void','cancelled')
     ORDER BY a.status='open' DESC, COALESCE(a.last_bid_timestamp,a.created_at) DESC
   `).all();
   res.json(rows.map(r=> ({...r, current_top: r.current_top? JSON.parse(r.current_top): null })));
