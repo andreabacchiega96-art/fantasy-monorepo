@@ -10,14 +10,14 @@ import rostersRouter from './routes/rosters.js';
 import adminRouter from './routes/admin.js';
 import hereRouter from './routes/herewego.js';
 import { bootstrapRose } from './bootstrapRose.js';
-import { ensureAdminUser } from "./ensureAdmin.js";
+import { ensureAdminStructure } from "./ensureAdmin.js";
 
 dotenv.config();
 const app = express();
 app.use(cors());
 app.use(express.json());
 initDb();
-ensureAdminUser();
+ensureAdminStructure();
 bootstrapRose(); // <-- importa le rose da server/data/import_rose.j
 
 app.get('/api/health', (req,res)=>{
