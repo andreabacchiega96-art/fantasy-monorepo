@@ -47,8 +47,8 @@ export default function App(){
 
     <div style={{marginTop:16}}>
       {page==='aste' && <Aste me={me}/>}
-      {page==='mia' && <Rose me={me}/>}
-      {page==='rose' && <RoseTutte/>}
+      {page==='mia' && <Squadra me={me}/>}
+      {page==='rose' && <Rose/>}
       {page==='personale' && <Personale me={me}/>}
       {page==='here' && <HereWeGo/>}
       {page==='admin' && me?.is_admin && <Admin/>}
